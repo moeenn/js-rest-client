@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="stylesheets/normalize.css">
+	<link rel="stylesheet" href="stylesheets/feather.css">
+	<title>REST Client</title>
+</head>
+<body>
+	<!-- banner -->
+	<section id="banner" class="padding-vertical-big">
+		<div class="container">
+			<h3>REST Client</h3>
+			<p>Test your REST APIs with ease</p>
+		</div>
+	</section>
+
+	<!-- input fields -->
+	<section>
+		<div class="container">
+			<form action="" method="POST" id="entry_form">
+				<fieldset>
+					<div class="group-fields flex-row">
+						<select name="http_method" id="entry_form" style="flex: 1">
+							<option value="GET">Get</option>
+							<option value="POST">Post</option>
+							<option value="PUT">Put</option>
+							<option value="DELETE">Delete</option>
+						</select>
+						<input type="url" name="address" id="address" required="required" placeholder="http://localhost:8080/api/" style="flex: 4">
+						<input type="submit" class="button-primary" value="Send" style="flex: 1">
+					</div>
+				</fieldset>
+			</form>
+		</div>
+	</section>
+
+	<!-- response window -->
+	<section>
+		<div class="container">
+			<div class="flex-column">
+				<pre style="flex: 1">
+					<code id="response">
+						<!-- request response will be place here by JS -->
+					</code>
+				</pre>
+			</div>
+		</div>
+	</section>
+
+	<!-- javascript -->
+	<script src="main.js"></script>
+</body>
+</html>
