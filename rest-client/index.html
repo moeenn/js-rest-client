@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
 		}
 	</style>
 </head>
+
 <body>
 	<!-- banner -->
 	<section id="banner" class="padding-vertical-big">
@@ -20,27 +22,25 @@
 			<p>Test your REST APIs with ease</p>
 		</div>
 	</section>
-
 	<!-- input fields -->
 	<section>
 		<div class="container">
 			<form id="entry_form">
 				<fieldset>
 					<div class="group-horizontal flex-row">
-						<select name="http_method" id="entry_form" class="flex-1">
+						<select name="http_method" id="entry_form" class="flex-2">
 							<option value="GET">Get</option>
 							<option value="POST">Post</option>
 							<option value="PUT">Put</option>
 							<option value="DELETE">Delete</option>
 						</select>
-						<input type="url" name="address" id="address" required="required" placeholder="http://localhost:8080/api/" class="flex-5">
+						<input type="url" name="address" id="address" required="required" placeholder="http://localhost:8080/api/" class="flex-4">
 						<input type="submit" class="button-primary flex-1" value="Send">
 					</div>
 				</fieldset>
 			</form>
 		</div>
 	</section>
-
 	<!-- optional input fields -->
 	<section>
 		<div class="container">
@@ -55,21 +55,18 @@
 			</form>
 		</div>
 	</section>
-
 	<!-- response window -->
 	<section>
 		<div class="container">
-			<div class="flex-column">
-				<pre class="flex-1">
-					<code id="response">
-						<!-- request response will be place here by JS -->
-					</code>
-				</pre>
-			</div>
+			<pre>
+				<code id="response" style="height: 35vh">
+					<!-- request response will be place here by JS -->
+				</code>
+			</pre>
 		</div>
 	</section>
-
 	<!-- javascript -->
 	<script src="main.js"></script>
 </body>
+
 </html>
