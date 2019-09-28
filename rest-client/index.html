@@ -2,10 +2,10 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="stylesheets/normalize.css">
-	<link rel="stylesheet" href="stylesheets/feather.css">
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<link rel="stylesheet" href="stylesheets/normalize.css"/>
+	<link rel="stylesheet" href="stylesheets/feather.css"/>
 	<title>REST Client</title>
 	<style>
 		#banner {
@@ -28,7 +28,7 @@
 			<form id="entry_form">
 				<fieldset>
 					<div class="group-horizontal flex-row">
-						<select name="http_method" id="entry_form" class="flex-2">
+						<select name="http_method" id="request_method" class="flex-2">
 							<option value="GET">Get</option>
 							<option value="POST">Post</option>
 							<option value="PUT">Put</option>
@@ -47,8 +47,7 @@
 			<form id="entry_form">
 				<fieldset>
 					<div class="group-horizontal flex-row">
-						<input type="text" name="request_header" id="request_header" placeholder="Content-Type: application/json" class="flex-2">
-						<input type="text" name="request_body" id="request_body" class="flex-4" placeholder="JSON String">
+						<input type="text" name="request_body" id="request_body" class="flex-6" placeholder="JSON String">
 						<input type="button" name="upload_json" id="upload_json" class="button-primary flex-1" value="Upload">
 					</div>
 				</fieldset>
@@ -59,7 +58,7 @@
 	<section>
 		<div class="container">
 			<pre>
-				<code id="response" style="height: 35vh">
+				<code id="response_area" style="min-height: 35vh">
 					<!-- request response will be place here by JS -->
 				</code>
 			</pre>
