@@ -9,11 +9,9 @@ document.querySelector('#entry-form').addEventListener('submit', (event) => {
 	// get the form values
 	const URL = document.querySelector('#address').value;
 
-	// get optional fields
-	// if (METHOD == 'POST' || METHOD == 'PUT') {}
-
 	const xhr = new XMLHttpRequest();
 	xhr.open(METHOD, URL, true);
+	xhr.setRequestHeader('Content-Type', 'application/json');
 
 	// loading
 	xhr.onprogress = function() {
@@ -51,4 +49,8 @@ function GetMethod() {
 	} else {
 		optionalFields.style.display = 'none';
 	}
+}
+
+class UI {
+	static
 }

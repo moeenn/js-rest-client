@@ -1,6 +1,6 @@
 // globals
 const apiKey = '1s9mBrXtijsRplYRXqJkhOkMdUdAWl67';
-const purity = 111; // 100 SFW, 110 Sketcy, 111 NSFW
+const purity = 100; // 100 SFW, 110 Sketcy, 111 NSFW
 let pageNum = 1;
 
 
@@ -24,7 +24,6 @@ class UI {
 		</a>`
 
 		wallArea.appendChild(wallGallery);
-		console.log('Added Wallpaper to Document:', wallpaper);
 	}
 }
 
@@ -33,7 +32,10 @@ document.addEventListener('DOMContentLoaded', GetWallpapers);
 
 function GetWallpapers() {
 	const xhr = new XMLHttpRequest();
-	xhr.open('GET', `https://wallhaven.cc/api/v1/search?apikey=${apiKey}&page=${pageNum}&purity=${purity}`, true);
+	const URL = `https://wallhaven.cc/api/v1/search?apikey=${apiKey}&page=${pageNum}&purity=${purity}`;
+	// const URL = 'example.json';
+	xhr.open('GET', URL , true);
+	xhr.withCredentials = true;
 
 	// loading
 	xhr.onprogress = function() {
