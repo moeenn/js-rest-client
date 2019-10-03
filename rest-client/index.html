@@ -43,8 +43,8 @@
 			<form id="entry-form" method="POST">
 				<fieldset>
 					<div class="group-horizontal flex-horizontal">
-						<select name="http_method" id="request-method" class="flex-2">
-							<option value="GET">Get</option>
+						<select name="http-method" id="http-method" class="flex-2">
+							<option value="GET" selected="selected">Get</option>
 							<option value="POST">Post</option>
 							<option value="PUT">Put</option>
 							<option value="DELETE">Delete</option>
@@ -63,8 +63,8 @@
 			<form id="entry_form">
 				<fieldset>
 					<div class="group-horizontal flex-horizontal">
-						<input type="text" name="request_body" id="request_body" class="flex-6" placeholder="JSON String">
-						<input type="button" name="upload_json" id="upload_json" class="button-primary flex-1" value="Upload">
+						<input type="text" name="request-body" id="request-body" class="flex-6" placeholder="JSON String">
+						<input type="button" name="upload-json" id="upload-json" class="button-primary flex-1" value="Upload">
 					</div>
 				</fieldset>
 			</form>
@@ -75,7 +75,7 @@
 	<section>
 		<div class="container">
 			<pre>
-				<code id="response_area" style="min-height: 35vh">
+				<code id="response-area" style="min-height: 35vh">
 					<!-- request response will be place here by JS -->
 				</code>
 			</pre>

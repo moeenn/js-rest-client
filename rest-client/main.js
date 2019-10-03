@@ -1,5 +1,23 @@
-// globals
-let METHOD;
+// UI Class
+class UI {
+	static WriteToDocument(content) {
+		let contentJSON;
+
+		// check input is valid JSON
+		try {
+			contentJSON = JSON.parse(content);
+		}
+		catch(error) {
+			console.log('Invalid JSON String:', error);
+			return;
+		}
+
+		// write to the page
+		const writeArea = document.querySelector('#response-area');
+		writeArea.innerHTML = JSON.stringify(contentJSON, null, 2);
+		console.log('Response Written to Document');
+	}
+}
 
 // watch for submit
 document.querySelector('#entry-form').addEventListener('submit', (event) => {
@@ -8,21 +26,16 @@ document.querySelector('#entry-form').addEventListener('submit', (event) => {
 
 	// get the form values
 	const URL = document.querySelector('#address').value;
+	const method = document.querySelector('#http-method').value
 
 	const xhr = new XMLHttpRequest();
-	xhr.open(METHOD, URL, true);
-	xhr.setRequestHeader('Content-Type', 'application/json');
-
-	// loading
-	xhr.onprogress = function() {
-		console.log('Sending Request ...');
-	}
+	xhr.open(method, URL, true);
 
 	// on completion
 	xhr.onload = function() {
-		if (this.status == 200) {
+		if (this.status == 200 && this.responseText.length != 0 ) {
 			console.log('Response Status: OK');
-			console.log(this.responseText);
+			UI.WriteToDocument(this.responseText);
 		} else if ( this.status == 404 ) {
 			console.log('Response Status: Not Found (404)');
 		}
@@ -33,24 +46,28 @@ document.querySelector('#entry-form').addEventListener('submit', (event) => {
 		console.log('Failed to receive response from server!');
 	}
 
-	// send resquest
-	xhr.send();
+	const requestBody = document.querySelector('#request-body').value;
+	if ( requestBody.length != 0 ) {
+		console.log('Request Body Set:', requestBody);
+		console.log('Sending Request with body content ...');
+		xhr.send(requestBody);
+	} else {
+		console.log('Sending Request ...');
+		xhr.send();
+	}
 });
 
-// menu item selection
-document.querySelector('#request-method').addEventListener('input', GetMethod);
+// event listener: Show Hide Optional Fields
+document.querySelector('#http-method').addEventListener('input', ShowHideOptional);
 
-function GetMethod() {
-	METHOD = document.querySelector('#request-method').value;
+function ShowHideOptional() {
 	const optionalFields = document.querySelector('#optional-fields')
+	const method = document.querySelector('#http-method').value
 
-	if (METHOD == 'POST' || METHOD == 'PUT') {
+	// only display request body if relevant
+	if ( method == 'POST' || method == 'PUT' ) {
 		optionalFields.style.display = 'block';
 	} else {
 		optionalFields.style.display = 'none';
 	}
-}
-
-class UI {
-	static
 }
