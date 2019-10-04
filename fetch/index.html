@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="stylesheets/normalize.css">
+	<link rel="stylesheet" href="stylesheets/feather.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Fetch</title>
+	<style>
+		body {
+			background: #f7f7f7;
+		}
+		.button-thin, .rounded-corners {
+			background: white;
+		}
+		.rounded-corners p {
+			margin-bottom: 0.5rem;
+		}
+	</style>
+</head>
+<body>
+	<section class="margin-vertical-5">
+		<div class="container">
+			<button class="button-thin" id="createPost">Create Post</button>
+			<button class="button-thin" id="getText">Load Text</button>
+			<button class="button-thin" id="getUsers">Load Users</button>
+			<button class="button-thin" id="getPosts">Load Posts</button>
+		</div>
+	</section>
+
+	<section class="margin-bottom-5">
+		<div class="container">
+			<div id="PostArea">
+				<!-- js will place post creation form here -->
+			</div>
+		</div>
+	</section>
+
+	<section class="margin-bottom-5">
+		<div class="container">
+			<div class="two-column grid" id="output">
+				<!-- js inserts go here -->
+			</div>
+		</div>
+	</section>
+
+	<script src="main.js"></script>
+</body>
+</html>

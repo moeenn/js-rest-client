@@ -1,0 +1,22 @@
+[
+	{
+		"id":1,
+		"name":"Richard Hendricks",
+		"email":"hendricks@piper.com"
+	},
+	{
+		"id":2,
+		"name":"Erlich Bachman",
+		"email":"bachmanian@piper.com"
+	},
+	{
+		"id":3,
+		"name":"Gilfoyle",
+		"email":"hailStan@piper.com"
+	},
+	{
+		"id":4,
+		"name":"Dinesh Chughtai",
+		"email":"pakMrT@piper.com"
+	}
+]
