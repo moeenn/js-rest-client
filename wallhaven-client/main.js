@@ -2,6 +2,7 @@
 const apiKey = '1s9mBrXtijsRplYRXqJkhOkMdUdAWl67';
 const purity = 100; // 100 SFW, 110 Sketcy, 111 NSFW
 let pageNum = 1;
+const testing = false;
 
 // wallpaper class
 class Wallpaper {
@@ -31,8 +32,14 @@ document.addEventListener('DOMContentLoaded', GetWallpapers);
 
 function GetWallpapers() {
 	const xhr = new XMLHttpRequest();
-	// const URL = `https://wallhaven.cc/api/v1/search?apikey=${apiKey}&page=${pageNum}&purity=${purity}`;
-	const URL = 'example.json';
+	let URL;
+
+	if(testing) {
+		URL = 'example.json';
+	} else {
+		URL = `https://wallhaven.cc/api/v1/search?apikey=${apiKey}&page=${pageNum}&purity=${purity}`;
+	}
+
 	xhr.open('GET', URL , true);
 	xhr.withCredentials = true;
 

@@ -18,7 +18,7 @@ class Post {
 class UI {
 	static CreateCard() {
 		const card = document.createElement('div');
-		card.className = 'padding-5 shadow-normal rounded-corners';
+		card.className = 'padding-5 shadow-normal rounded-corners card';
 		return card;
 	}
 
@@ -30,7 +30,8 @@ class UI {
 
 		const card = UI.CreateCard();
 		card.appendChild(p)
-		responseArea.appendChild(card);
+		// responseArea.appendChild(card);
+		responseArea.insertBefore(card, responseArea.firstChild);
 		console.log('Text written to Document');
 	}
 
@@ -42,7 +43,8 @@ class UI {
 			<p><em>Name: </em>${user.name}</p>
 			<p><em>Email: </em>${user.email}</p>`;
 
-		responseArea.appendChild(card);
+		// responseArea.appendChild(card);
+		responseArea.insertBefore(card, responseArea.firstChild);
 		console.log('User written to Document');
 	}
 
@@ -53,26 +55,22 @@ class UI {
 			<h4 class="text-color-primary">${post.title}</h4>
 			<p class="text-justify">${post.body}</p>`;
 
-		responseArea.appendChild(card);
+		// responseArea.appendChild(card);
+		responseArea.insertBefore(card, responseArea.firstChild);
 		console.log('Post written to Document');
 	}
 
-	static ShowPostForm() {
-		const postArea = document.querySelector('#PostArea');
-		const card = UI.CreateCard();
-		card.innerHTML = `
-			<form id="PostForm">
-				<fieldset>
-					<div class="group-vertical">
-						<input type="text" id="PostTitle" placeholder="Title">
-						<input type="text" id="PostBody" placeholder="Content">
-					</div>
-				</fieldset>
-				<button class="margin-vertical-3" id="PostSubmit">Add Post</button>
-			</form>`;
+	static TogglePostForm() {
+		const postFormArea = document.querySelector('#PostFormArea');
 
-		postArea.appendChild(card);
-		console.log('Post Form written to Document');
+		// toggle visibility
+		postFormArea.style.display = PostFormArea.style.display == "none" ? "block" : "none";
+		console.log('Post Form visibility toggled');
+	}
+
+	static ClearPostForm() {
+		document.querySelector('#PostTitle').value = "";
+		document.querySelector('#PostBody').value = "";
 	}
 }
 
@@ -111,22 +109,17 @@ function getPosts() {
 			const post = new Post(postJSON.title, postJSON.body);
 			UI.WritePostToDoc(post);
 		}
-	})
+	});
 }
 
 // event: Show Create Post Form
-document.querySelector('#createPost').addEventListener('click', UI.ShowPostForm);
-
-// event: add user post to the page
-const postForm = document.querySelector('#PostForm');
-if (postForm != null) {
-	document.querySelector('#PostSubmit').addEventListener('click', AddPost);
-}
-
-function AddPost() {
+document.querySelector('#createPost').addEventListener('click', UI.TogglePostForm);
+document.querySelector('#PostSubmit').addEventListener('click', (event) => {
+	event.preventDefault();
 	const title = document.querySelector('#PostTitle').value;
 	const body = document.querySelector('#PostBody').value;
 
 	const post = new Post(title, body);
 	UI.WritePostToDoc(post);
-}
+	UI.ClearPostForm();
+});
