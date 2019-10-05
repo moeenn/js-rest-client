@@ -19,6 +19,21 @@ class UI {
 	}
 }
 
+// event listener: Show Hide Optional Fields
+document.querySelector('#http-method').addEventListener('input', ShowHideOptional);
+
+function ShowHideOptional() {
+	const optionalFields = document.querySelector('#optional-fields')
+	const method = document.querySelector('#http-method').value
+
+	// only display request body if relevant
+	if ( method == 'POST' || method == 'PUT' ) {
+		optionalFields.style.display = 'block';
+	} else {
+		optionalFields.style.display = 'none';
+	}
+}
+
 // watch for submit
 document.querySelector('#entry-form').addEventListener('submit', (event) => {
 	// prevent submission
@@ -57,17 +72,3 @@ document.querySelector('#entry-form').addEventListener('submit', (event) => {
 	}
 });
 
-// event listener: Show Hide Optional Fields
-document.querySelector('#http-method').addEventListener('input', ShowHideOptional);
-
-function ShowHideOptional() {
-	const optionalFields = document.querySelector('#optional-fields')
-	const method = document.querySelector('#http-method').value
-
-	// only display request body if relevant
-	if ( method == 'POST' || method == 'PUT' ) {
-		optionalFields.style.display = 'block';
-	} else {
-		optionalFields.style.display = 'none';
-	}
-}

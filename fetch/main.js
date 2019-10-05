@@ -30,7 +30,6 @@ class UI {
 
 		const card = UI.CreateCard();
 		card.appendChild(p)
-		// responseArea.appendChild(card);
 		responseArea.insertBefore(card, responseArea.firstChild);
 		console.log('Text written to Document');
 	}
@@ -80,8 +79,8 @@ document.querySelector('#getText').addEventListener('click', getText);
 function getText() {
 	// fetch returns a promise. we use the then() method to perform actions on them
 	fetch('sample.txt')
-	.then((response) => response.text())
-	.then((data) => UI.WriteTextToDoc(data));
+		.then((response) => response.text())
+		.then((data) => UI.WriteTextToDoc(data));
 }
 
 // event: Users from JSON File
