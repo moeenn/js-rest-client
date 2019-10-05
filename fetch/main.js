@@ -113,7 +113,9 @@ function getPosts() {
 
 // event: Show Create Post Form
 document.querySelector('#createPost').addEventListener('click', UI.TogglePostForm);
-document.querySelector('#PostForm').addEventListener('submit', (event) => {
+document.querySelector('#PostForm').addEventListener('submit', addUserPost );
+
+function addUserPost(event) {
 	event.preventDefault();
 	const title = document.querySelector('#PostTitle').value;
 	const body = document.querySelector('#PostBody').value;
@@ -121,4 +123,4 @@ document.querySelector('#PostForm').addEventListener('submit', (event) => {
 	const post = new Post(title, body);
 	UI.WritePostToDoc(post);
 	UI.ClearPostForm();
-});
+}

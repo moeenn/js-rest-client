@@ -10,6 +10,10 @@
 		body {
 			background: #f7f7f7;
 		}
+		fieldset input {
+			margin-top: 0.5rem;
+			margin-bottom: 0.5rem;
+		}
 		.card, #actions {
 			background: white;
 		}
@@ -46,10 +50,8 @@
 			<div class="padding-5 shadow-normal rounded-corners card">
 				<form id="PostForm" method="POST">
 					<fieldset>
-						<div class="group-vertical">
-							<input type="text" id="PostTitle" placeholder="Title" required="required">
-							<input type="text" id="PostBody" placeholder="Content" required="required">
-						</div>
+						<input type="text" id="PostTitle" placeholder="Title" required="required">
+						<input type="text" id="PostBody" placeholder="Content" required="required">
 					</fieldset>
 					<input type="submit" class="margin-vertical-3" value="Add Post">
 				</form>
