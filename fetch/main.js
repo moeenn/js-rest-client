@@ -114,7 +114,7 @@ function getPosts() {
 
 // event: Show Create Post Form
 document.querySelector('#createPost').addEventListener('click', UI.TogglePostForm);
-document.querySelector('#PostSubmit').addEventListener('click', (event) => {
+document.querySelector('#PostForm').addEventListener('submit', (event) => {
 	event.preventDefault();
 	const title = document.querySelector('#PostTitle').value;
 	const body = document.querySelector('#PostBody').value;
