@@ -1,41 +1,48 @@
 // UI Class
 class UI {
 	static WriteToDocument(content) {
-		let contentJSON;
-
-		// check input is valid JSON
-		try {
-			contentJSON = JSON.parse(content);
-		}
-		catch(error) {
-			console.log('Invalid JSON String:', error);
-			return;
-		}
-
+		const contentJSON = JSON.parse(content);
 		// write to the page
 		const writeArea = document.querySelector('#response-area');
 		writeArea.innerHTML = JSON.stringify(contentJSON, null, 2);
 		console.log('Response Written to Document');
 	}
+
+	static ClearOptionalField() {
+		document.querySelector('#request-body').value = '';
+	}
+
+	static WriteStatusCode(code) {
+		const tag = document.querySelector('#status-code')
+		if (code == 200) {
+			tag.className = 'positive tag';
+		} else if (code == 404) {
+			tag.className = 'negative tag';
+		} else {
+			tag.className = 'alert tag';
+		}
+		tag.innerHTML = code
+	}
 }
 
 // event listener: Show Hide Optional Fields
 document.querySelector('#http-method').addEventListener('input', ShowHideOptional);
-
 function ShowHideOptional() {
-	const optionalFields = document.querySelector('#optional-fields')
 	const method = document.querySelector('#http-method').value
+	const optionalField = document.querySelector('#optional-field')
 
 	// only display request body if relevant
 	if ( method == 'POST' || method == 'PUT' ) {
-		optionalFields.style.display = 'block';
+		optionalField.style.display = 'block';
 	} else {
-		optionalFields.style.display = 'none';
+		optionalField.style.display = 'none';
+		UI.ClearOptionalField();
 	}
 }
 
 // watch for submit
-document.querySelector('#entry-form').addEventListener('submit', (event) => {
+document.querySelector('#entry-form').addEventListener('submit', sendRequest);
+function sendRequest(event) {
 	// prevent submission
 	event.preventDefault();
 
@@ -49,11 +56,9 @@ document.querySelector('#entry-form').addEventListener('submit', (event) => {
 	// on completion
 	xhr.onload = function() {
 		if (this.status == 200 && this.responseText.length != 0 ) {
-			console.log('Response Status: OK');
 			UI.WriteToDocument(this.responseText);
-		} else if ( this.status == 404 ) {
-			console.log('Response Status: Not Found (404)');
 		}
+		UI.WriteStatusCode(this.status);
 	}
 
 	// report error on response
@@ -63,12 +68,11 @@ document.querySelector('#entry-form').addEventListener('submit', (event) => {
 
 	const requestBody = document.querySelector('#request-body').value;
 	if ( requestBody.length != 0 ) {
-		console.log('Request Body Set:', requestBody);
 		console.log('Sending Request with body content ...');
 		xhr.send(requestBody);
 	} else {
 		console.log('Sending Request ...');
 		xhr.send();
 	}
-});
+}
 
