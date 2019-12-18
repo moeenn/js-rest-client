@@ -75,4 +75,3 @@ function sendRequest(event) {
 		xhr.send();
 	}
 }
-

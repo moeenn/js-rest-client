@@ -1,2 +1,6 @@
-# Javascript Apps
-Simple Projects exploring the potential of vanilla JavaScript
+# REST Client
+A simple Javascript application for testing REST APIs
+
+## Screenshots
+![1](screenshots/screenshot-1.png)
+![2](screenshots/screenshot-2.png)
