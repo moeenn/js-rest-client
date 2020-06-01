@@ -1,0 +1,34 @@
+#banner {
+	background: linear-gradient(225deg, rgb(139, 59, 210),rgb(47, 30, 152));
+}
+
+#optional-field {
+	animation: slide-up 0.2s ease;
+	display: none;
+}
+
+.background-dull {
+	background: rgba(0,0,0,0.03);
+}
+
+.background-dull code {
+	background: transparent;
+	padding: 0;
+}
+
+.tag {
+	padding-top: 0;
+	padding-bottom: 0;
+	float: right;
+}
+
+@keyframes slide-up {
+	0% {
+		opacity: 0;
+		transform: translateY(1rem);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
