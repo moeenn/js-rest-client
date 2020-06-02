@@ -7,41 +7,42 @@ const fetch = require('node-fetch');
 const port = 8000;
 const app = express();
 
-// static folder
-const publicFolder = path.join(__dirname, 'public');
-app.use(express.static(publicFolder));
-app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));	// static folder
+app.use(bodyParser.json());									// parsing received JSON
 
-// get the actual external json data
-async function makeExternalRequest(url, method, data, callback) {
-	try {
-		const response = await fetch(url, {
-			method: method,
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			},
-			// TODO: GET request cannot have body
-			// body: JSON.stringify(data),
-		});
+function makeExternalRequest(clientRequest, callback) {
+	console.log('Making External Request: ', clientRequest);
 
-		const json = await response.json();
-		callback(json);
-	} catch (err) {
-		console.error("Failed to Receive Response: ", err);
-	}
+	const JSONHeaders = {
+		'Accept': 'application/json',
+		'Content-Type': 'application/json',
+	};
+
+	fetch(clientRequest.url, {
+		method: clientRequest.method,
+		headers: JSONHeaders,
+		body: JSON.stringify(clientRequest.data),
+	})
+		.then( function (response) { response.json(); })
+		.then( function (json) { callback(json); })
+		.catch( function (err) { console.error(err.message); });
 }
 
-// API endpoint
-app.post('/api/', (req, res) => {
+// primary api endpoint
+app.post('/api/', function (req, res, next) {
+	console.log('Request Received: ', req.body);
+	const clientRequest = req.body;
+
 	// get JSON response from external sources
-	makeExternalRequest(req.body.url, req.body.method, req.body.data, (json) => {
+	makeExternalRequest(clientRequest, function (json) {
 		// send JSON response to frontend
 		res.send(json);
 	});
+
+	next();
 });
 
 // start the server
-app.listen(port, () => {
+app.listen(port, function () {
 	console.log('Running server on Port ', port);
-})
+});
