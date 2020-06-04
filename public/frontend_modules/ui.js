@@ -36,14 +36,25 @@ export function WriteJSONToDocument(elementIdentifier, contentJSON) {
 	}
 }
 
-// export function WriteStatusCode(code) {
-// 	const tag = document.querySelector('#status-code')
-// 	if (code == 200) {
-// 		tag.className = 'positive tag';
-// 	} else if (code == 404) {
-// 		tag.className = 'negative tag';
-// 	} else {
-// 		tag.className = 'alert tag';
-// 	}
-// 	tag.innerHTML = code;
-// }
+export function WriteStatusCode(statusCode) {
+	const tag = document.querySelector('#status-code')
+	tag.innerHTML = statusCode;
+
+	switch(statusCode) {
+		case 200:
+			tag.className = 'positive tag';
+			break;
+
+		case 201:
+			tag.className = 'info tag';
+			break;
+
+		case 404:
+			tag.className = 'negative tag';
+			break;
+
+		default:
+			tag.className = 'alert tag';
+
+	}
+}

@@ -1,4 +1,4 @@
-import { ShowElement, HideElement, ClearElement, WriteJSONToDocument } from './ui.js';
+import { ShowElement, HideElement, ClearElement, WriteJSONToDocument, WriteStatusCode } from './ui.js';
 import Log, { LoggingEnabled } from './logger.js';
 
 // global settings
@@ -88,13 +88,14 @@ async function SendToServer(payloadObject) {
 	try {
 		const response = await fetch(submitRequest);
 		const responseJSON = await response.json();
-
 		Log('Request Completed Successfully', responseJSON);
 
-		WriteJSONToDocument('#response-area', responseJSON);
+		WriteStatusCode(responseJSON.http_status_code);
+		WriteJSONToDocument('#response-area', responseJSON.data);
 		Log('Writing Response to Document');
  	}
 	catch (error) {
-		Log('Failed to Receive Response: ', err.message);
+		Log('Failed to Receive Response: ', error.message);
 	}
+
 }
