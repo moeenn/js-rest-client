@@ -6,7 +6,7 @@ const api_endpoint = '/api/';
 let request_has_body = false;
 
 // enable console logging of debug messages
-LoggingEnabled(true);
+LoggingEnabled(false);
 
 
 // if request needs a body, this data will be obtained from the user form

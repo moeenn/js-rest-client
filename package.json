@@ -18,7 +18,9 @@
     "url": "https://github.com/moeenn/js-rest-client/issues"
   },
   "homepage": "https://github.com/moeenn/js-rest-client#readme",
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
   "dependencies": {
     "express": "^4.17.1",
     "node-fetch": "^2.6.0",
