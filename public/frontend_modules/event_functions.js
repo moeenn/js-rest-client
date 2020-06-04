@@ -1,10 +1,15 @@
 import { ShowElement, HideElement, ClearElement, WriteJSONToDocument } from './ui.js';
-import Log from './logger.js';
+import Log, { LoggingEnabled } from './logger.js';
 
 // global settings
 const api_endpoint = '/api/';
 let request_has_body = false;
 
+// enable console logging of debug messages
+LoggingEnabled(true);
+
+
+// if request needs a body, this data will be obtained from the user form
 function checkRequestHasBody() {
 	const method = document.querySelector('#http-method').value;
 
@@ -25,7 +30,8 @@ function checkRequestHasBody() {
 	}
 }
 
-// optional fields are related to JSON request payloads
+
+// optional fields are related to raw JSON input
 export function ShowHideOptionalFields() {
 	checkRequestHasBody();
 	if(request_has_body) {
@@ -33,10 +39,11 @@ export function ShowHideOptionalFields() {
 		Log('Optional Fields visible');
 	} else {
 		HideElement('#optional-field');
-		ClearElement('#request-body');
+		// ClearElement('#request-body');
 		Log('Optional Fields hidden');
 	}
 }
+
 
 // function executed by event listener on submit button press
 export function ProcessRequestSubmit(event) {
@@ -47,52 +54,47 @@ export function ProcessRequestSubmit(event) {
 	ClearElement('#response-area');
 	Log('Response area cleared');
 
-	let serverRequestPayload;
+	let serverRequestPayload = {
+		url: document.querySelector('#address').value,
+		method: document.querySelector('#http-method').value
+	};
 
 	checkRequestHasBody();
 	if(request_has_body) {
-		serverRequestPayload = {
-			url: document.querySelector('#address').value,
-			method: document.querySelector('#http-method').value,
-			data: JSON.parse(document.querySelector('#request-body').value),
-		};
-		Log('Server Request Prepared with body: ', serverRequestPayload);
-	} else {
-		serverRequestPayload = {
-			url: document.querySelector('#address').value,
-			method: document.querySelector('#http-method').value
-		}
-		Log('Server Request Prepared without body: ', serverRequestPayload);
+		const dataObject = JSON.parse(document.querySelector('#request-body').value);
+		serverRequestPayload['data'] = dataObject;
 	}
 
+	Log('Server Request Prepared: ', serverRequestPayload);
 	SendToServer(serverRequestPayload);
 }
 
-// function private to this module
-async function SendToServer(payload) {
-	const JSONHeaders = {
-		'Accept': 'application/json',
-		'Content-Type': 'application/json',
+
+// function private within this module
+async function SendToServer(payloadObject) {
+	const requestObject = {
+		method: 'POST',		// we always post to our server
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(payloadObject),
 	};
 
-	const submitRequest = new Request(api_endpoint, {
-		method: 'POST',		// we always post to our server
-		headers: JSONHeaders,
-		body: JSON.stringify(payload),
-	});
+	const submitRequest = new Request(api_endpoint, requestObject);
 	Log('Request Object Initialized: ', submitRequest);
 
 	// try to submit request if Request Object has been successfully created
-	if(submitRequest) {
-		try {
-			const response = await fetch(submitRequest);
-			const json = await response.json();
-			Log('Request Completed Successfully');
+	try {
+		const response = await fetch(submitRequest);
+		const responseJSON = await response.json();
 
-			WriteJSONToDocument('#response-area', json);
-			Log('Writing Response to Document');
-		} catch (err) {
-			Log("Failed to Receive Response: ", err);
-		}
+		Log('Request Completed Successfully', responseJSON);
+
+		WriteJSONToDocument('#response-area', responseJSON);
+		Log('Writing Response to Document');
+ 	}
+	catch (error) {
+		Log('Failed to Receive Response: ', err.message);
 	}
 }

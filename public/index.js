@@ -1,4 +1,4 @@
-import { ShowHideOptionalFields, ProcessRequestSubmit } from './clientside_modules/event_functions.js';
+import { ShowHideOptionalFields, ProcessRequestSubmit } from './frontend_modules/event_functions.js';
 
 // event listeners
 // Show Hide Optional Fields
