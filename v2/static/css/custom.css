@@ -130,13 +130,26 @@ textarea {
   grid-area: history;
 }
 
+#historyWindow #historyEntries tr {
+  cursor: pointer;
+}
+
+#historyWindow #historyEntries tr td {
+  padding: var(--spacing-1);
+}
+
+#historyWindow #historyEntries tr td img {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
 @media only screen and (max-width: 1050px) {
   #mainWindow {
     grid-template-columns: 100%;
     grid-template-rows: repeat(3, 87vh);
     grid-template-areas:
       "response"
-      "log"
-      "history";
+      "history"
+      "log";
   }
 }

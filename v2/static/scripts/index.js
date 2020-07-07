@@ -1,3 +1,5 @@
+"use strict";
+
 import Request from './request.js';
 
 // helper functions
@@ -33,6 +35,7 @@ const handleCreateRequest = (event) => {
 const handleCloseRequestDialogue = (event) => {
   event.preventDefault();
   $('#newRequest').classList.add('d-none');
+
   App.Event('RequestDialogueNotVisible');
 };
 
@@ -43,6 +46,9 @@ const handleFormReset = (event) => {
   $('#newRequestURL').value = "";
   $('#httpMethodMenu').value = "get";
   $('#newRequestJSONPayload').value = "";
+
+  // hide optional JSON field
+  $('#newRequestOptionalField').classList.add('d-none');
 
   // reset submit button
   App.Event('NewRequestSubmitButtonReset');
@@ -61,10 +67,10 @@ const handleNewRequestEnableOptionalFields = (event) => {
   const optionalField = $('#newRequestOptionalField');
 
   if(event.detail === 'post') {
-    optionalField.style.display = 'contents';
+    optionalField.classList.remove('d-none');
     App.Event('RequestOptionalFieldEnabled', { detail: true });
   } else {
-    optionalField.style.display = 'none';
+    optionalField.classList.add('d-none');
     App.Event('RequestOptionalFieldEnabled', { detail: false });
   }
 };
@@ -186,6 +192,9 @@ const handleValidatedForm = (event) => {
   // create a log entry
   const LogEntry = `Sending ${event.detail.method.toUpperCase()} Request to ${event.detail.url}`;
   App.Event('NewLogEntry', {detail: LogEntry});
+
+  // create history entry
+  App.Event('NewHistoryEntry', {detail: event.detail});
 };
 
 const handleAPIResponseReceived = (event) => {
@@ -230,11 +239,64 @@ const handleNewLogEntry = (event) => {
   logOutput.innerHTML += `${currentTime} ${event.detail}\n`;
 };
 
+const handleNewHistoryEntry = (event) => {
+  event.preventDefault();
+  const row = document.createElement('tr');
+
+  row.innerHTML = `
+    <td><img src="static/images/play.svg"></td>
+    <td id="historyURL">${event.detail.url}</td>
+    <td id="historyMethod">${event.detail.method.toUpperCase()}</td>`;
+
+  $('#historyEntries').appendChild(row);
+
+  // this feels like cheating, but it is the cleanest way
+  row.onclick = () => App.Event('CreateRequestFromHistory', {detail: event.detail});
+
+  // store history in browser local storage
+  App.Event('AddToLocalStorage', {detail: event.detail});
+};
+
+const handleAddToLocalStorage = (event) => {
+  event.preventDefault();
+
+  let database = [];
+  const record = JSON.stringify(event.detail);
+
+  if(localStorage.getItem('RequestHistory') === null) {
+    // FIXME: database.push is not a function
+    database.push(record);
+  } else {
+    database = localStorage.getItem('RequestHistory');
+    database.push(record);
+  }
+  localStorage.setItem('RequestHistory', JSON.stringify(database));
+};
+
+const handleCreateRequestFromHistory = (event) => {
+  event.preventDefault();
+  console.log(event.detail);
+
+  App.Event('CreateNewRequest');
+  $('#newRequestURL').value = event.detail.url;
+  $('#httpMethodMenu').value = event.detail.method;
+
+  if(event.detail.method === 'post') {
+    $('#newRequestOptionalField').classList.remove('d-none');
+    $('#newRequestJSONPayload').value = event.detail.jsonPayload;
+  }
+};
+
 // register events and handlers here
 const eventHandlers = [
   {
     target: '#buttonCreateRequest',
     eventName: 'click',
+    eventHandler: handleCreateRequest
+  },
+  {
+    target: App.RootElement,
+    eventName: 'CreateNewRequest',
     eventHandler: handleCreateRequest
   },
   {
@@ -321,6 +383,21 @@ const eventHandlers = [
     target: App.RootElement,
     eventName: 'NewLogEntry',
     eventHandler: handleNewLogEntry
+  },
+  {
+    target: App.RootElement,
+    eventName: 'NewHistoryEntry',
+    eventHandler: handleNewHistoryEntry
+  },
+  {
+    target: App.RootElement,
+    eventName: 'AddToLocalStorage',
+    eventHandler: handleAddToLocalStorage
+  },
+  {
+    target: App.RootElement,
+    eventName: 'CreateRequestFromHistory',
+    eventHandler: handleCreateRequestFromHistory
   }
 ];
 
@@ -336,7 +413,7 @@ window.onkeyup = (event) => {
 
   switch(key) {
     case 'n':
-      handleCreateRequest(event);
+      App.Event('CreateNewRequest');
       break;
 
     case 'Escape':
