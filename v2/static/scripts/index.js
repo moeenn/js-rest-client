@@ -1,6 +1,8 @@
 "use strict";
 
 import Request from './request.js';
+import Store from './store.js';
+import App from './app.js';
 
 // helper functions
 const $ = (elementID) => {
@@ -9,15 +11,6 @@ const $ = (elementID) => {
     throw `Element Not Found: ${elementID}`;
   }
   return element;
-};
-
-// global application state
-const App = {
-  RootElement: '#root',
-  Event: (eventName, payload={}) => {
-    const event = new CustomEvent(eventName, payload);
-    document.querySelector(App.RootElement).dispatchEvent(event);
-  }
 };
 
 // event handlers
@@ -160,13 +153,9 @@ const handleValidatedForm = (event) => {
   // send request
   switch (event.detail.method) {
     case 'get':
-      try {
-        Request.Get(event.detail.url, (responseObj) => {
-          App.Event('APIResponseReceived', {detail: responseObj })
-        });
-      } catch (error) {
-        App.Event('NewLogEntry', {detail: error})
-      }
+      Request.Get(event.detail.url, (responseObj) => {
+        App.Event('APIResponseReceived', {detail: responseObj })
+      });
       break;
 
     case 'post':
@@ -261,16 +250,17 @@ const handleAddToLocalStorage = (event) => {
   event.preventDefault();
 
   let database = [];
-  const record = JSON.stringify(event.detail);
+  const record = event.detail;
 
-  if(localStorage.getItem('RequestHistory') === null) {
-    // FIXME: database.push is not a function
+  if(Store.Get('RequestHistory') === null) {
+    console.log('database:', database);
     database.push(record);
+    Store.Add('RequestHistory', database);
   } else {
-    database = localStorage.getItem('RequestHistory');
+    database = Store.Get('RequestHistory');
     database.push(record);
+    Store.Update('RequestHistory', database);
   }
-  localStorage.setItem('RequestHistory', JSON.stringify(database));
 };
 
 const handleCreateRequestFromHistory = (event) => {

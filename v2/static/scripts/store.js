@@ -1,51 +1,38 @@
 class Store {
-  constructor(name) {
-    this.name = key;
+  static Add(key, value) {
+    if(localStorage.getItem(key) !== null) {
+      console.error(`Failed to Add Record: Item Exists: ${key}`);
+      return null;
+    }
+    localStorage.setItem(key, JSON.stringify(value));
   }
 
-  Add(obj) {
-    if(localStorage.getItem(this.name)) {
-      throw `Add Failed: Item Already Exists: ${this.name}`;
+  static Remove(key) {
+    if(localStorage.getItem(key) === null) {
+      console.error(`Failed to Remove: Item Does not Exist: ${key}`);
+      return null;
     }
-    localStorage.setItem(this.name, obj);
+    localStorage.removeItem(key);
   }
 
-  Update(newObj) {
-    if(localStorage.getItem(this.name) === null) {
-      throw `Update Failed: Item does not exist: ${this.name}`;
+  static Get(key) {
+    if(localStorage.getItem(key) === null) {
+      console.error(`Failed to Get: Item Does not Exist: ${key}`);
+      return null;
     }
-    localStorage.setItem(this.name, newObj);
+    return JSON.parse(localStorage.getItem(key));
   }
 
-  Delete() {
-    if(localStorage.getItem(this.name) === null) {
-      console.warn(`Deletion Failed: Item does not exist: ${this.name}`);
-      return;
+  static Update(key, newValue) {
+    if(localStorage.getItem(key) === null) {
+      console.error(`Failed to Update: Item Does not Exist: ${key}`);
+      return null;
     }
-    localStorage.removeItem(this.name);
+    localStorage.setItem(key, JSON.stringify(newValue));
   }
 
-  AddArray(array) {
-    if(localStorage.getItem(this.name)) {
-      console.warn(`Add Array Failed: Item Already Exists: ${this.name}`);
-      return;
-    }
-    localStorage.setItem(this.name, array);
-  }
-
-  AddArrayElement(newObj) {
-    if(localStorage.getItem(this.name) === null) {
-      console.warn(`Array Add Item Failed: Array not found: ${this.name}`);
-      return;
-    }
-    const data = localStorage.getItem(this.name);
-    try {
-      data.push(newObj);
-    } catch {
-      console.warn(`Array Add Item Failed: Item not of Array Type: ${this.name}`);
-      return;
-    }
-    localStorage.setItem(this.name, data);
+  static Clear() {
+    localStorage.clear();
   }
 }
 

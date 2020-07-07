@@ -1,13 +1,16 @@
+import App from './app.js';
+
 class Request {
 	static async Get(url, callback) {
 		let res, json = undefined;
-
 		const timer_start = performance.now();
+
 		try {
 			res = await fetch(url);
 			json = await res.json();
-		} catch (error) {
-			throw `Request Failed: ${error}`;
+		} catch(error) {
+			App.Event('NewLogEntry', {detail: `Request Failed: ${error.message}`});
+			App.Event('CloseNewRequestDialogue');
 		}
 		const timer_end = performance.now();
 
@@ -32,8 +35,9 @@ class Request {
 		try {
 			res = await fetch(url, requestHeaders);
 			json = await res.json();
-		} catch (err) {
-			console.error('Request Failed: ', err);
+		} catch (error) {
+			App.Event('NewLogEntry', {detail: `Request Failed: ${error.message}`});
+			App.Event('CloseNewRequestDialogue');
 		}
 		const timer_end = performance.now();
 
@@ -57,8 +61,9 @@ class Request {
 		try {
 			res = await fetch(url, requestHeaders);
 			json = await res.json();
-		} catch (err) {
-			console.error('Request Failed: ', err);
+		} catch (error) {
+			App.Event('NewLogEntry', {detail: `Request Failed: ${error.message}`});
+			App.Event('CloseNewRequestDialogue');
 		}
 		const timer_end = performance.now();
 
