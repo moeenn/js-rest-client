@@ -1,0 +1,21 @@
+{
+  "name": "sandbox",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "serve ./",
+    "bundle": "watchify js/main.js -o static/bundle.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "serve": "^11.3.2"
+  },
+  "devDependencies": {
+    "browserify": "^16.5.1",
+    "watchify": "^3.11.1"
+  }
+}
